@@ -71,14 +71,16 @@ class CaseInsensitiveArray implements \ArrayAccess, \Iterator, \Countable {
     }
     
     public function offsetUnset($offset) {
-        $key = $this->map[$this->hash($offset)];
-        unset($this->container[$key]);
-        unset($this->map[$this->hash($offset)]);
+        $hash = $this->hash($offset);
+        if (isset($this->map[$hash])) {
+	        unset($this->container[$this->map[$hash]], $this->map[$hash]);
+        }
     }
     
     public function offsetGet($offset) {
-        $key = $this->map[$this->hash($offset)];
-        return $this->container[$key];
+        return $this->offsetExists($offset)
+            ? $this->container[$this->map[$this->hash($offset)]]
+            : NULL;
     }
     
     public function rewind() {
