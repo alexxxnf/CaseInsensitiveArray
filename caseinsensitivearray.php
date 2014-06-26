@@ -43,11 +43,11 @@ class CaseInsensitiveArray implements \ArrayAccess, \Iterator, \Countable {
      * @param mixed[mixed] Optional array to instantiate as
      */
     public function __construct(Array $array=array()) {
-        $this->container = $array;
-        
+        $this->container = array();
         $this->map = array();
-        foreach (array_keys($array) as $key) {
-            $this->map[$this->hash($key)] = $key;
+        
+        foreach ($array as $key => $value) {
+            $this->offsetSet($key, $value);
         }
     }
     
